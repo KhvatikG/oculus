@@ -31,4 +31,4 @@ COPY main.py ./
 COPY .env ./
 
 # Запуск основного приложения
-CMD ["poetry run python main.py"]
+CMD ["poetry", "run", "python", "main.py"]
