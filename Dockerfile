@@ -6,7 +6,8 @@ LABEL authors="Игорь"
 WORKDIR /app
 
 # Установка зависимостей
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL https://install.python-poetry.org | python3 -
