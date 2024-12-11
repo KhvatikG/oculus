@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher
 from src.config import settings
 from src.bot import OculusBot
 
+
 async def main():
     # Настройка логирования
     logging.basicConfig(
@@ -29,6 +30,7 @@ async def main():
         logging.error(f"Ошибка при запуске бота: {e}")
     finally:
         await bot.session.close()
+
 
 if __name__ == '__main__':
     asyncio.run(main())
