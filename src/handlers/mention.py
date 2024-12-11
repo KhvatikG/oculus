@@ -8,10 +8,12 @@ from aiogram.filters import Filter
 from src.config import settings
 from src.bot import OculusBot  # Импортируем базовый класс бота
 
+
 class MentionFilter(Filter):
     """
     Кастомный фильтр для детектирования упоминаний
     """
+
     def __init__(self, usernames: Optional[List[str]] = None):
         self.usernames = usernames or []
 
@@ -29,7 +31,8 @@ class MentionFilter(Filter):
 
         return False
 
-async def handle_mention(message: Message, bot: OculusBot):
+
+async def handle_mention(message: Message, bot_: OculusBot):
     """
     Обработчик сообщений с упоминаниями
     """
@@ -39,15 +42,16 @@ async def handle_mention(message: Message, bot: OculusBot):
             chat_name = message.chat.title if message.chat.title else "Неизвестный чат"
 
             # Отправляем уведомление через метод бота
-            await bot.send_mention_notification(
+            await bot_.send_mention_notification(
                 user_id=admin_id,
                 message=message,
                 chat_name=chat_name
             )
 
+
 def register_mention_handlers(dp: Dispatcher, bot: OculusBot):
     """
     Регистрация обработчиков упоминаний
     """
-    mention_filter = MentionFilter(usernames=[settings.USERNAME])
-    dp.message.register(partial(handle_mention, bot=bot), mention_filter)
+    mention_filter = MentionFilter(usernames=[settings.USERNAME_])
+    dp.message.register(partial(handle_mention, bot_=bot), mention_filter)
