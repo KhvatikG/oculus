@@ -53,5 +53,5 @@ def register_mention_handlers(dp: Dispatcher, bot: OculusBot):
     """
     Регистрация обработчиков упоминаний
     """
-    mention_filter = MentionFilter(usernames=[settings.USERNAME_])
+    mention_filter = MentionFilter(usernames=settings.USERNAMES_)
     dp.message.register(partial(handle_mention, bot_=bot), mention_filter)
