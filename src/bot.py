@@ -1,10 +1,8 @@
-from aiogram import Bot, Dispatcher
+import datetime
+
+from aiogram import Bot, Dispatcher, html
 from aiogram.types import Message
 from typing import Optional
-
-from src.handlers.system import register_system_handlers
-from src.handlers.mention import register_mention_handlers
-
 
 class OculusBot:
     def __init__(self, bot: Bot, dp: Dispatcher):
@@ -15,6 +13,9 @@ class OculusBot:
         """
         Настройка и регистрация основных обработчиков событий
         """
+
+        from src.handlers.system import register_system_handlers
+        from src.handlers.mention import register_mention_handlers
 
         # Регистрация системных хэндлеров
         register_system_handlers(self.dp)
@@ -34,7 +35,7 @@ class OculusBot:
         try:
             # Формируем подробное уведомление
             notification_text = f"🔔 Упоминание в чате "
-            notification_text += f"*{chat_name}*\n\n" if chat_name else "\n"
+            notification_text += f"{html.bold(chat_name)}\n\n" if chat_name else "\n"
 
             # Информация об отправителе
             if message.from_user:
@@ -44,18 +45,24 @@ class OculusBot:
                 notification_text += "\n\n"
 
             # Текст сообщения
-            notification_text += f"```\n{message.text or message.caption or 'Сообщение без текста'}```"
+            notification_text += f"\n{message.text or message.caption or 'Сообщение без текста'}"
 
-            # Кнопка перехода к сообщению
-            if message.chat and message.message_id:
-                notification_text += f"\n[Перейти к сообщению](https://t.me/c/{message.chat.id}/{message.message_id})"
+            # Ссылка на чат
+            invite = await self.bot.create_chat_invite_link(
+                chat_id=message.chat.id,
+                expire_date= datetime.datetime.now() + datetime.timedelta(days=2),
+                member_limit=1
+            )
+            notification_text += f"\n\n{html.link(f"Перейти к чату {chat_name}", invite.invite_link)}"
+
 
             # Отправляем уведомление
             await self.bot.send_message(
                 chat_id=user_id,
                 text=notification_text,
-                parse_mode='Markdown'
+                parse_mode="HTML"
             )
+
         except Exception as e:
             # Логируем ошибки отправки
             print(f"Ошибка отправки уведомления: {e}")
