@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "oculus"
+version = "0.1.0"
+description = "Telegram bot для отслеживания упоминаний"
+authors = ["Garik <khvatik.igor@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+aiogram = "^3.3.0"
+pydantic = "^2.6.0"
+python-dotenv = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+mypy = "^1.8.0"
+ruff = "^0.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.mypy]
+strict = true
+disallow_untyped_defs = true
